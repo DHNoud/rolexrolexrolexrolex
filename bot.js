@@ -305,7 +305,7 @@ client.on('message', message => {
   message.channel.bulkDelete(args[0]).then(() => {
     const embed = new Discord.RichEmbed()
       .setColor(0xF16104)
-      .setDescription(`تم مسح  ${args[0]} رساله.`);
+      .setDescription(`تم مسح  ${args[0]} رساله.`).then(msg => msg.delete(3000));
     message.channel.send({ embed });
 
     const actionlog = message.guild.channels.find('name', 'ourlog');
