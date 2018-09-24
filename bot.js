@@ -564,4 +564,12 @@ message.channel.send(`** ${user.tag} banned from the server ! :airplane: **  `).
 }
 });
 
+client.on('message', message=> {
+    if (message.author.bot) return;
+    if (message.isMentioned(client.user))
+    {
+    message.reply(" يَ عيوني ؟");
+    }
+});
+
 client.login(process.env.BOT_TOKEN);
