@@ -374,26 +374,6 @@ client.on('message' , najzx => {
             }
  });
 
-const db = require('quick.db');
-const giphy = require('giphy-api')();    
-const googl = require('goo.gl');  
-const translate = require('google-translate-api');   
-const getYoutubeID = require('get-youtube-id'); 
-const { Client, Util } = require('discord.js');  
-const UserBlocked = new Set(); 
-const stripIndents = require('common-tags').stripIndents;
-const figlet = require('figlet');
-const google = require('google-it'); 
-const queue = new Map(); 
-const zalgo = require('zalgolize');   
-const fetchVideoInfo = require('youtube-info');
-const YouTube = require('simple-youtube-api');
-const ytdl = require('ytdl-core');
-const youtube = new YouTube("AIzaSyAdORXg7UZUo7sePv97JyoDqtQVi3Ll0b8");
-const sql = require("sqlite");
-const dateFormat = require('dateformat'); 
-const pretty = require('pretty-ms') 
-
 //سنحتاج كل هده التعريفات الان و لاحقا//
 
 client.on('message', async msg => { 
