@@ -217,29 +217,6 @@ client.on('message', message => {
     }
   }); 
 
- client.on('message', message => {
-var prefix = "$";
-      if(message.content === prefix + "unlockchannel") {
-      if(!message.channel.guild) return;
-      if(!message.member.hasPermission('ADMINISTRATOR')) return message.reply('❌');
-             message.channel.overwritePermissions(message.guild.id, {
-             READ_MESSAGES: true
- })
-              message.channel.send('Done  ')
- }
-});
-
-client.on('message', message => {
-var prefix = "$";
-      if(message.content === prefix + "lockchannel") {
-      if(!message.channel.guild) return;
-      if(!message.member.hasPermission('ADMINISTRATOR')) return message.reply('You Dont Have Perms ❌');
-             message.channel.overwritePermissions(message.guild.id, {
-             READ_MESSAGES: false
- })
-              message.channel.send('Channel Hided Successfully ! ✅  ')
- }
-});
 
 client.on('message', message => { //invite
    let prefix = "$";
@@ -374,20 +351,150 @@ client.on('message' , najzx => {
             }
  });
 
-const developers = ["283691332633886720"]
-const adminprefix = "-";
-client.on('message', message => {
-    var argresult = message.content.split(` `).slice(1).join(' ');
-      if (!developers.includes(message.author.id)) return;
-      
-  if (message.content.startsWith(adminprefix + 'setname')) {
-  client.user.setUsername(argresult).then
-      message.channel.send(`Changing The Name To ..**${argresult}** `)
-} else
-if (message.content.startsWith(adminprefix + 'setavatar')) {
-  client.user.setAvatar(argresult);
-    message.channel.send(`Changing The Avatar To :**${argresult}** `);
-}
+  client.on("guildBanAdd", (guild, member) => {
+  client.setTimeout(() => {
+    guild.fetchAuditLogs({
+        limit: 1,
+        type: 22
+      })
+      .then(audit => {
+        let exec = audit.entries.map(a => a.executor.username);
+        try {
+          let log = guild.channels.find('name', 'ourlog');
+          if (!log) return;
+          client.fetchUser(member.id).then(myUser => {
+          let embed = new Discord.RichEmbed()
+        .setAuthor("حــظــر عــضــو :  ")
+        .setColor('#36393e') 
+        .setThumbnail(myUser.avatarURL)
+        .addField(' الــعــضــو  ',`**${myUser.username}**`,true)
+        .addField('  بــواســطــه ',`**${exec}**`,true)
+        .setFooter(myUser.username,myUser.avatarURL)
+            .setTimestamp();
+          log.send(embed).catch(e => {
+            console.log(e);
+          });
+          });
+        } catch (e) {
+          console.log(e);
+        }
+      });
+  }, 1000);
 });
+
+
+
+    client.on("guildBanRemove", (guild, member) => {
+  client.setTimeout(() => {
+    guild.fetchAuditLogs({
+        limit: 1,
+        type: 22
+      })
+      .then(audit => {
+        let exec = audit.entries.map(a => a.executor.username);
+        try {
+          let log = guild.channels.find('name', 'ourlog');
+          if (!log) return;
+          client.fetchUser(member.id).then(myUser => {
+          let embed = new Discord.RichEmbed()
+        .setAuthor("  فــك حــظــر عــن عــضــو ")
+        .setColor('#36393e') 
+		 .setThumbnail(myUser.avatarURL)
+        .addField(' الــعــضــو  ',`**${myUser.username}**`,true)
+        .addField('  بــواســطــه ',`**${exec}**`,true)
+        .setFooter(myUser.username,myUser.avatarURL)
+            .setTimestamp();
+          log.send(embed).catch(e => {
+            console.log(e);
+          });
+          });
+        } catch (e) {
+          console.log(e);
+        }
+      });
+  }, 1000);
+});
+
+client.on('messageDelete', message => {
+    if (!message || !message.id || !message.content || !message.guild || message.author.bot) return;
+    const channel = message.guild.channels.find('name', 'ourlog');
+    if (!channel) return;
+   
+    let embed = new Discord.RichEmbed()
+       .setAuthor(`${message.author.tag}`, message.author.avatarURL)
+ .setTitle('  مــســح رســالــه  :   ')
+ .addField('  الــرســالــه  ',`${message.cleanContent}`)
+ .addField('  مــســحــت فــي  ',`<#${message.channel.id}>`)
+ .addField(' يــواســطــه  ', `<@${message.author.id}> `)
+       .setColor('#36393e')
+       .setTimestamp();
+     channel.send({embed:embed});
+ 
+});
+
+     
+      client.on("roleDelete", role => {
+  client.setTimeout(() => {
+    role.guild.fetchAuditLogs({
+        limit: 1,
+        type: 30
+      })
+      .then(audit => {
+        let exec = audit.entries.map(a => a.executor.username)
+        try {
+
+          let log = role.guild.channels.find('name', 'ourlog');
+          if (!log) return;
+          let embed = new Discord.RichEmbed()
+            .setColor('#36393e')          
+            .setTitle('-  مــســح رتــبــه ')
+            .addField(' اســم الــرتــبــه  ', role.name, true)
+            .addField(' هــويــة الــرتــبــه ', role.id, true)
+            .addField(' لــون الــرتــبــه ', role.hexColor, true)
+            .addField(' بــواســطــه ', exec, true)
+            .setColor('#36393e') 
+            .setTimestamp()
+            
+          log.send(embed).catch(e => {
+            console.log(e);
+          });
+        } catch (e) {
+          console.log(e);
+        }
+      })
+  }, 1000)
+})
+
+
+client.on('roleCreate', role => {
+  client.setTimeout(() => {
+    role.guild.fetchAuditLogs({
+        limit: 1,
+        type: 30
+      })
+      .then(audit => {
+        let exec = audit.entries.map(a => a.executor.username)
+        try {
+
+          let log = role.guild.channels.find('name', 'ourlog');
+          if (!log) return;
+          let embed = new Discord.RichEmbed()
+            .setTitle('+  انــشــاء رتــبــه ')
+            .addField(' اســم الــرتــبــه  ', role.name, true)
+            .addField(' هــويــة الــرتــبــه ', role.id, true)
+            .addField(' لــون الــرتــبــه ', role.hexColor, true)
+            .addField(' بــواســطــه ', exec, true)
+            .setColor('#36393e') 
+            .setTimestamp()
+            
+          log.send(embed).catch(e => {
+            console.log(e);
+          });
+        } catch (e) {
+          console.log(e);
+        }
+      })
+  }, 1000)
+})
 
 client.login(process.env.BOT_TOKEN);
