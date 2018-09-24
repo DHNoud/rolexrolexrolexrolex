@@ -497,4 +497,71 @@ client.on('roleCreate', role => {
   }, 1000)
 })
 
+  client.on('messageUpdate', (message, newMessage) => {
+    if (message.content === newMessage.content) return;
+    if (!message || !message.id || !message.content || !message.guild || message.author.bot) return;
+    const channel = message.guild.channels.find('name', 'ourlog');
+    if (!channel) return;
+ 
+    let embed = new Discord.RichEmbed()
+       .setAuthor(`${message.author.tag}`, message.author.avatarURL)
+.setTitle(' تــعــديــل رســالــه  :  ')
+.addField('قــبــل الــتــعــديــل',`${message.cleanContent}`)
+.addField(' بــعــد  الــتــعــديــل ',`${newMessage.cleanContent}`)
+.addField(' عــدلــت فــي  ',`<#${message.channel.id}>`)
+.addField(' يــواســطــه  ', `<@${message.author.id}> `)
+.setColor('#36393e')
+       .setTimestamp();
+     channel.send({embed:embed});
+ 
+ 
+});
+
+ client.on('message', message => {
+ if (message.content.toLowerCase() === prefix + "move all") {
+     message.delete(4000)
+ if(!message.channel.guild) return;
+ if (!message.member.hasPermission("MOVE_MEMBERS")) return;
+ if(!message.guild.member(client.user).hasPermission("MOVE_MEMBERS")) return;
+if (message.member.voiceChannel == null) return;
+ var author = message.member.voiceChannelID;
+ var m = message.guild.members.filter(m=>m.voiceChannel)
+ message.guild.members.filter(m=>m.voiceChannel).forEach(m => {
+ m.setVoiceChannel(author)
+ })
+ message.channel.send('\`Moved All Voice Members To Your Channel\`').then(m => m.delete(4000))
+ }
+   });
+
+ client.on('message', message => {
+ if(!message.channel.guild) return; 	 	
+ 
+  if (message.author.bot) return;
+  if (message.author.codes) return;
+  if (!message.content.startsWith(prefix)) return;
+
+  let command = message.content.split(" ")[0];
+  command = command.slice(prefix.length);
+
+  let args = message.content.split(" ").slice(1);
+
+if (message.content.split(" ")[0].toLowerCase() === prefix + "ban") {
+               if(!message.channel.guild) return;
+         
+  if(!message.guild.member(message.author).hasPermission("MUTE_MEMBERS")) return;
+  if(!message.guild.member(client.user).hasPermission("MUTE_MEMBERS")) return;
+  let user = message.mentions.users.first();
+  
+  if (message.mentions.users.size < 1) return message.reply('Mention a User').then(message => message.delete(4000))
+  if (!message.guild.member(user)
+  .bannable) return message.reply("I Can’t Ban This User").then(message => message.delete(4000))
+
+
+  message.guild.member(user).ban(7, user);
+
+message.channel.send(`** ${user.tag} banned from the server ! :airplane: **  `).then(message => message.delete(10000))
+
+}
+});
+
 client.login(process.env.BOT_TOKEN);
