@@ -353,6 +353,34 @@ client.on('message', message=> {
     }
 });
 
-
+client.on('message', message => {
+    var p = message.mentions.members.first();
+    var reason = message.content.split(" ").slice(2).join(' ');
+    var log = message.guild.channels.find('name', 'ourlog');
+    if(message.content.startsWith(`${prefix}warn`)){
+        if(!p) return message.reply(`**منشن الشخص اول**`);
+        if(!reason) return message.reply(`**حط سبب**`);
+        if(!p.bannable) return message.reply(`**عزيز وغالي ما اعطيه وارن**`);
+        reason = reason.replace('1', "**كتابة الاوامر بالشات العام**");
+        reason = reason.replace('2', "**التحدث عن السياسة**");
+        reason = reason.replace('3', "**التحدث عن الدين **");
+        reason = reason.replace('4', "**السبام**");
+        reason = reason.replace('5', "**العنصرية**");
+        reason = reason.replace('6', "**عدم الاحترام**");
+        reason = reason.replace('7', "**نشر بالعام**");
+        var embed = new Discord.RichEmbed()
+        .setAuthor(`تم التحذير`)
+        .addField(`Name ♣`, `<@${p.id}>`)
+        .addField(`By ♣`, `<@${message.author.id}>`)
+        .addField(`Reason ♣`, reason)
+        .setTimestamp()
+        .setColor("WHITE")
+        .setFooter(` `)
+        message.channel.send(`${p} ${reason}`)
+            message.delete();
+        log.send({embed});
+        warnRoles = ['إدارة']
+    }
+});
 
 client.login(process.env.BOT_TOKEN);
