@@ -103,14 +103,14 @@ client.on('message',async message => {
   if(!message.guild.member(message.author).hasPermissions('MANAGE_CHANNELS')) return message.reply('❌ **ليس لديك الصلاحيات الكافية**');
   if(!message.guild.member(client.user).hasPermissions(['MANAGE_CHANNELS','MANAGE_ROLES_OR_PERMISSIONS'])) return message.reply('❌ **ليس معي الصلاحيات الكافية**');
   message.channel.send('✅| **تم عمل الروم بنجاح**');
-  message.guild.createChannel(`ʀᴏʟᴇx ᴏɴʟɪɴᴇ :  ${message.guild.members.filter(m => m.voiceChannel).size} ` , 'voice').then(c => {
+  message.guild.createChannel(`Voice Online :  ${message.guild.members.filter(m => m.voiceChannel).size} ` , 'voice').then(c => {
     console.log(`Voice online channel setup for guild: \n ${message.guild.name}`);
     c.overwritePermissions(message.guild.id, {
       CONNECT: false,
       SPEAK: false
     });
     setInterval(() => {
-      c.setName(`ʀᴏʟᴇx ᴏɴʟɪɴᴇ :  ${message.guild.members.filter(m => m.voiceChannel).size} `)
+      c.setName(`Voice Online :  ${message.guild.members.filter(m => m.voiceChannel).size} `)
     },1000);
   });
   }
@@ -118,7 +118,7 @@ client.on('message',async message => {
 
 client.on('message', message => {
         var prefix = "$";
-        if(message.content.startsWith(prefix + 'mutevoice')) {
+        if(message.content.startsWith(prefix + 'mutev')) {
           if(!message.member.hasPermission("MUTE_MEMBERS")) return message.channel.sendMessage("**ليس لديك صلاحية لاعطاء ميوت صوتي**❌ ").then(m => m.delete(5000));
           if(!message.guild.member(client.user).hasPermission("MUTE_MEMBERS")) return message.reply("**I Don't Have `MUTE_MEMBERS` Permission**").then(msg => msg.delete(6000))
            
@@ -199,7 +199,7 @@ client.on('message', message => {
 
 client.on('message', message => {
       var prefix = "$";
-      if(message.content.startsWith(prefix + 'unmutevoice')) {
+      if(message.content.startsWith(prefix + 'unmutev')) {
         if(!message.member.hasPermission("MUTE_MEMBERS")) return message.channel.sendMessage("**ليس لديك صلاحيات لإزالة ميوت صوتي**❌ ").then(m => m.delete(5000));
         if(!message.guild.member(client.user).hasPermission("MUTE_MEMBERS")) return message.reply("**I Don't Have `MUTE_MEMBERS` Permission**").then(msg => msg.delete(6000))
          
@@ -225,14 +225,14 @@ client.on('message', message => { //invite
 if (message.author.bot) return;
         message.channel.createInvite({
         thing: true,
-        maxUses: 3,
+        maxUses: 10,
         maxAge: 10800
     }).then(invite =>
       message.author.sendMessage(invite.url)
     )
     const Embed11 = new Discord.RichEmbed()
         .setColor("#5016f3")
-        .setDescription("مدة الرابط : 3 ساعات , عدد الأستخدامات : 3")
+        .setDescription("مدة الرابط : 3 ساعات , عدد الأستخدامات : 10")
    .setFooter("Rolex ") 
                    .setTimestamp()
                 message.channel.send('** تم أرسال الرابط في الخاص **').then(msg => msg.delete(3000));
@@ -518,7 +518,7 @@ client.on('roleCreate', role => {
 });
 
  client.on('message', message => {
- if (message.content.toLowerCase() === prefix + "move all") {
+ if (message.content.toLowerCase() === prefix + "moveall") {
      message.delete(4000)
  if(!message.channel.guild) return;
  if (!message.member.hasPermission("MOVE_MEMBERS")) return;
@@ -529,7 +529,7 @@ if (message.member.voiceChannel == null) return;
  message.guild.members.filter(m=>m.voiceChannel).forEach(m => {
  m.setVoiceChannel(author)
  })
- message.channel.send('\`Moved All Voice Members To Your Channel\`').then(m => m.delete(4000))
+ message.channel.send('\`تم سحب جميع الأعضاء\`').then(m => m.delete(4000))
  }
    });
 
@@ -554,7 +554,7 @@ if (message.content.split(" ")[0].toLowerCase() === prefix + "ban") {
   
   if (message.mentions.users.size < 1) return message.reply('Mention a User').then(message => message.delete(4000))
   if (!message.guild.member(user)
-  .bannable) return message.reply("I Can’t Ban This User").then(message => message.delete(4000))
+  .bannable) return message.reply("العضو عزيز علي ما ابنده").then(message => message.delete(4000))
 
 
   message.guild.member(user).ban(7, user);
