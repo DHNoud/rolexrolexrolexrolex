@@ -383,4 +383,34 @@ client.on('message', message => {
     }
 });
 
+
+client.on('message', message => {
+    var p = message.mentions.members.first();
+    var reason = message.content.split(" ").slice(2).join(' ');
+    var log = message.guild.channels.find('name', 'ourlog');
+    if(message.content.startsWith(`${prefix}ban`)){
+        if(!p) return message.reply(`**منشن الشخص**`);
+        if(!reason) return message.reply(`**حط سبب**`);
+        if(!p.bannable) return message.reply(`**عزيز وغالي ما ابنده**`);
+        reason = reason.replace('1', "**نشر في الخاص**");
+        reason = reason.replace('2', "**اسم غير لائق**");
+        reason = reason.replace('3', "**صوره غير لائقه**");
+        var embed = new Discord.RichEmbed()
+        .setAuthor(`User Banned!`)
+        .addField(`Name ♣`, `<@${p.id}>`)
+        .addField(`By ♣`, `<@${message.author.id}>`)
+        .addField(`Reason ♣`, reason)
+        .setTimestamp()
+        .setColor("BLACK")
+        .setFooter(` `)
+        p.ban();
+            message.delete();
+        log.send({embed});
+        banRoles = ['إدارة']
+    }
+});
+
+
+
+
 client.login(process.env.BOT_TOKEN);
